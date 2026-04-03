@@ -1,0 +1,46 @@
+═══════════════════════════════════════════════════════════════════════════
+                    CONVERTIDOR PDF A EXCEL v1.0
+═══════════════════════════════════════════════════════════════════════════
+
+▶ INICIO RAPIDO
+─────────────────────────────────────────────────────────────────────────
+
+  1. Doble clic en:       INICIAR.bat
+  2. Selecciona un PDF:   "Abrir PDF"
+  3. Revisa la tabla:     Vista previa automática
+  4. Exporta:             TXT • CSV • XLSX
+
+
+▶ OPCIONES ADICIONALES
+─────────────────────────────────────────────────────────────────────────
+
+  INICIAR_DEV.bat
+    → Modo desarrollo (requiere Node.js)
+    
+  CREAR_EJECUTABLE.bat
+    → Regenera el .exe si editas código (requiere Node.js)
+
+
+▶ REQUISITOS
+─────────────────────────────────────────────────────────────────────────
+
+  Para INICIAR.bat:
+    ✓ Windows 7+
+    ✓ 100 MB espacio
+    ✓ PDF con texto seleccionable
+
+  Para editar código:
+    + Node.js (https://nodejs.org/)
+
+
+▶ PROBLEMAS
+─────────────────────────────────────────────────────────────────────────
+
+  "No se encontró el ejecutable"
+    → Ejecuta CREAR_EJECUTABLE.bat primero
+
+  "PDF es una imagen escaneada"
+    → Usa OCR antes (Tesseract, etc)
+
+
+═══════════════════════════════════════════════════════════════════════════

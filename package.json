@@ -1,0 +1,76 @@
+{
+  "name": "convertidor-pdf-excel",
+  "version": "1.0.0",
+  "author": "Laruzo",
+  "description": "Aplicacion de escritorio para extraer texto limpio desde PDF y exportarlo a Excel.",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "web": "http-server . -p 5173 -c-1",
+    "web:src": "http-server src -p 5173 -c-1",
+    "build:icon": "node tools/generate-icon.mjs",
+    "dist": "npm run build:icon && electron-builder --win nsis",
+    "dist:portable": "npm run build:icon && electron-builder --win portable",
+    "pack": "npm run build:icon && electron-builder --dir"
+  },
+  "build": {
+    "appId": "com.laruzo.convertidor",
+    "productName": "Convertidor PDF a Excel",
+    "directories": {
+      "output": "dist"
+    },
+    "extraResources": [
+      {
+        "from": "spa.traineddata",
+        "to": "spa.traineddata"
+      },
+      {
+        "from": "node_modules/pdfjs-dist/build/pdf.worker.min.js",
+        "to": "pdf.worker.min.js"
+      }
+    ],
+    "asarUnpack": [
+      "node_modules/tesseract.js/**",
+      "node_modules/tesseract.js-core/**",
+      "node_modules/wasm-feature-detect/**"
+    ],
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "signAndEditExecutable": false,
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "artifactName": "${productName}-Setup-${version}.${ext}",
+      "requestedExecutionLevel": "user",
+      "perMachine": false
+    }
+  },
+  "dependencies": {
+    "pdfjs-dist": "^3.11.174",
+    "tesseract.js": "^7.0.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "electron": "^37.2.0",
+    "electron-builder": "^26.0.12",
+    "http-server": "^14.1.1",
+    "png-to-ico": "^3.0.1",
+    "sharp": "^0.34.5"
+  }
+}

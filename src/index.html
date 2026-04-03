@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convertidor PDF a Excel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="hero-panel">
+      <p class="eyebrow">Herramienta Windows</p>
+      <h1>Convertidor PDF a texto limpio y Excel</h1>
+      <p class="hero-copy">
+        Carga un PDF, reconstruye el texto por filas, detecta codigo, descripcion y stock,
+        y exporta el resultado como TXT, CSV o XLSX.
+      </p>
+
+      <div class="hero-card">
+        <div>
+          <span class="metric-label">Archivo</span>
+          <strong id="fileName">Sin PDF cargado</strong>
+        </div>
+        <div>
+          <span class="metric-label">Estado</span>
+          <strong id="statusText">Esperando archivo</strong>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <article class="stat-card">
+          <span>Paginas</span>
+          <strong id="pagesCount">0</strong>
+        </article>
+        <article class="stat-card">
+          <span>Lineas limpias</span>
+          <strong id="linesCount">0</strong>
+        </article>
+        <article class="stat-card">
+          <span>Filas detectadas</span>
+          <strong id="rowsCount">0</strong>
+        </article>
+      </div>
+
+      <div class="action-stack">
+        <button id="openFileButton" class="primary-button">Abrir PDF</button>
+        <button id="exportTxtButton" class="ghost-button" disabled>Guardar TXT limpio</button>
+        <button id="exportCsvButton" class="ghost-button" disabled>Guardar CSV</button>
+        <button id="exportXlsxButton" class="ghost-button" disabled>Guardar XLSX</button>
+        <button id="exportWordButton" class="ghost-button" disabled>Guardar Word (.doc)</button>
+      </div>
+
+      <div class="progress-block">
+        <div class="progress-track">
+          <div id="progressBar" class="progress-fill"></div>
+        </div>
+        <p id="progressLabel">Sin procesamiento activo</p>
+      </div>
+    </aside>
+
+    <main class="workspace-panel">
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="panel-kicker">Texto reconstruido</p>
+            <h2>Salida limpia del PDF</h2>
+          </div>
+          <p class="panel-note">Se eliminan encabezados, ruidos y espacios inconsistentes.</p>
+        </div>
+        <textarea id="cleanTextOutput" class="text-output" readonly placeholder="Aqui aparecera el texto limpio del PDF."></textarea>
+      </section>
+
+      <section class="panel table-panel">
+        <div class="panel-header">
+          <div>
+            <p class="panel-kicker">Tabla estructurada</p>
+            <h2>Datos listos para Excel</h2>
+          </div>
+          <p class="panel-note">Vista previa de las primeras filas detectadas.</p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Codigo</th>
+                <th>Descripcion</th>
+                <th>Stock</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <tr class="empty-row">
+                <td colspan="3">Todavia no hay datos procesados.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../node_modules/pdfjs-dist/build/pdf.min.js"></script>
+  <script src="../node_modules/xlsx/dist/xlsx.full.min.js"></script>
+  <script type="module" src="./renderer.js"></script>
+</body>
+</html>
