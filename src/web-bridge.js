@@ -119,12 +119,14 @@ async function ocrImageInBrowser({ imageBase64, pageNum, totalPages }) {
   }
 }
 
-window.desktopAPI = {
-  pickPdfFile: () => pickPdfFromBrowser(),
-  saveFile: (payload) => saveFileFromBrowser(payload),
-  ocrImage: (payload) => ocrImageInBrowser(payload),
-  pdfWorkerSrc: () => new URL('./vendor/pdfjs/pdf.worker.min.js', window.location.href).toString()
-};
+if (!window.desktopAPI) {
+  window.desktopAPI = {
+    pickPdfFile: () => pickPdfFromBrowser(),
+    saveFile: (payload) => saveFileFromBrowser(payload),
+    ocrImage: (payload) => ocrImageInBrowser(payload),
+    pdfWorkerSrc: () => new URL('./vendor/pdfjs/pdf.worker.min.js', window.location.href).toString()
+  };
+}
 
 window.addEventListener('beforeunload', async () => {
   if (ocrWorker) {
