@@ -1,16 +1,31 @@
 // pdfjs-dist v3.11 cargado via <script> en index.html → window.pdfjsLib
-// OCR se ejecuta en el proceso main (Node) via IPC
+// Tesseract y XLSX también vienen de <script> en web.html
+// OCR se ejecuta en el proceso main (Node) via IPC, o en navegador via Tesseract
+
+// Esperar a que los módulos globales estén disponibles antes de usar el DOM
+async function waitForGlobalModules() {
+  let attempts = 0;
+  while ((!window.pdfjsLib || !window.XLSX || !window.desktopAPI) && attempts < 30) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    attempts += 1;
+  }
+  
+  if (!window.pdfjsLib) {
+    throw new Error('PDF.js no se cargó desde CDN o local.');
+  }
+  if (!window.XLSX) {
+    throw new Error('XLSX no se cargó desde CDN o local.');
+  }
+  if (!window.desktopAPI) {
+    throw new Error('desktopAPI (web-bridge) no se inicializó.');
+  }
+}
+
+// Esperar a que estén disponibles antes de continuar
+await waitForGlobalModules();
 
 const pdfjsLib = window.pdfjsLib;
 const XLSX = window.XLSX;
-
-if (!XLSX) {
-  throw new Error('XLSX no disponible. Verifica que xlsx.full.min.js este cargado.');
-}
-
-if (!window.desktopAPI) {
-  throw new Error('desktopAPI no disponible. Usa index.html en Electron o web.html en navegador.');
-}
 
 // En la app empaquetada el worker está en extraResources (fuera del asar) para
 // que new Worker() pueda abrirlo con acceso normal al sistema de archivos.

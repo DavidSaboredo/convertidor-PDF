@@ -29,8 +29,18 @@ async function getOcrWorker() {
     return ocrWorker;
   }
 
-  const tesseractModule = window.Tesseract || await import('https://cdn.jsdelivr.net/npm/tesseract.js@7/dist/tesseract.esm.min.js');
-  ocrWorker = await tesseractModule.createWorker('spa', 1, {
+  // Esperar a que window.Tesseract esté disponible (cargado por <script>)
+  let attempts = 0;
+  while (!window.Tesseract && attempts < 30) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    attempts += 1;
+  }
+
+  if (!window.Tesseract) {
+    throw new Error('Tesseract.js no se cargó desde CDN. Verifica tu conexión de internet.');
+  }
+
+  ocrWorker = await window.Tesseract.createWorker('spa', 1, {
     logger: () => {}
   });
   return ocrWorker;
