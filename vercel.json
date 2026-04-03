@@ -1,9 +1,11 @@
 {
+  "buildCommand": "",
+  "outputDirectory": "src",
   "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/",
-      "destination": "/src/web.html"
+      "source": "/(.*)",
+      "destination": "/web.html"
     }
   ]
 }
