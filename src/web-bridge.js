@@ -41,6 +41,7 @@ async function getOcrWorker() {
   }
 
   ocrWorker = await window.Tesseract.createWorker('spa', 1, {
+    workerPath: new URL('./vendor/tesseract/worker.min.js', window.location.href).toString(),
     logger: () => {}
   });
   return ocrWorker;
@@ -122,7 +123,7 @@ window.desktopAPI = {
   pickPdfFile: () => pickPdfFromBrowser(),
   saveFile: (payload) => saveFileFromBrowser(payload),
   ocrImage: (payload) => ocrImageInBrowser(payload),
-  pdfWorkerSrc: () => 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js'
+  pdfWorkerSrc: () => new URL('./vendor/pdfjs/pdf.worker.min.js', window.location.href).toString()
 };
 
 window.addEventListener('beforeunload', async () => {
