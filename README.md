@@ -1,170 +1,136 @@
+<div align="center">
+
 # Convertidor PDF a Excel
 
-Aplicacion de escritorio para Windows orientada a trabajo y estudio.
+**Pasa el contenido de un PDF a una planilla lista para usar, sin copiar y pegar a mano. Funciona también con PDF escaneados.**
 
-Permite convertir datos desde PDF a formatos listos para Excel con dos modos:
+![Electron](https://img.shields.io/badge/Electron-0c1730?style=for-the-badge&logo=electron&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-0c1730?style=for-the-badge&logo=javascript&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-0c1730?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-0c1730?style=for-the-badge&logo=html5&logoColor=white)
+![CSS](https://img.shields.io/badge/CSS-0c1730?style=for-the-badge&logo=css&logoColor=white)
 
-- Extraccion directa para PDF con texto seleccionable.
-- OCR automatico para PDF escaneado (imagen).
+<br>
 
-Tambien incluye opcion web para usar en navegador en cualquier equipo.
+<img src="docs/portada.jpg" alt="Versión web del convertidor: carga de un PDF, texto limpio, tabla con código, descripción y stock, y botones de descarga" width="100%">
 
-## Caracteristicas
+</div>
 
-- Carga de PDF desde dialogo nativo de Windows.
-- Limpieza de texto por lineas.
-- Deteccion de filas con esquema `CODIGO - DESCRIPCION - STOCK`.
-- Exportacion a `TXT`, `CSV`, `XLSX` y `Word (.doc)`.
-- App portable y tambien instalador para distribuir.
-- Icono personalizado generado desde `logo.png`.
+> [!NOTE]
+> Proyecto personal de **laruzo-dev**: una herramienta de uso general, no desarrollada para un cliente en particular.
 
-## Requisitos
+## Qué resuelve
 
-- Windows 10/11 recomendado.
-- Node.js 20+ (solo para desarrollo/build).
+Muchos negocios reciben listas de productos, stock o precios en PDF y terminan cargándolas a mano en una planilla. Esta herramienta lee el PDF, limpia el texto, detecta las filas con formato `CÓDIGO - DESCRIPCIÓN - STOCK` y deja los datos listos para abrir en Excel o Word. Si el PDF es una foto o un escaneo, aplica reconocimiento de texto (OCR) en español.
 
-## Ejecutar en desarrollo
+## Funcionalidades
 
-```powershell
+- **Dos modos de lectura**: extracción directa si el PDF tiene texto seleccionable y OCR automático si es una imagen escaneada.
+- **Texto limpio**: normaliza las líneas del documento y muestra el resultado antes de exportar.
+- **Detección de filas**: reconoce el esquema `CÓDIGO - DESCRIPCIÓN - STOCK` y lo muestra en una tabla de vista previa.
+- **Contadores**: páginas, líneas limpias y filas detectadas, con barra de progreso mientras procesa.
+- **Exportación a cuatro formatos**: TXT, CSV, XLSX (Excel) y Word (.doc).
+- **App de escritorio para Windows**: con instalador y versión portable.
+- **Versión web**: funciona en el navegador, sin instalar nada; el OCR corre en el propio navegador.
+
+## Tecnologías
+
+| Parte | Tecnología |
+| --- | --- |
+| Aplicación de escritorio | Electron |
+| Lectura de PDF | pdf.js |
+| Reconocimiento de texto (OCR) | tesseract.js (idioma español) |
+| Exportación a Excel | SheetJS (xlsx) |
+| Interfaz | HTML, CSS y JavaScript |
+| Publicación de la versión web | Vercel |
+
+## Para desarrolladores
+
+<details>
+<summary><b>Cómo correrlo en tu compu</b></summary>
+
+Requisitos: Windows 10/11 y Node.js 20 o superior (solo para desarrollo y generación de instaladores).
+
+App de escritorio:
+
+```bash
 npm install
 npm start
 ```
 
-Atajos disponibles:
+Versión web:
 
-- `INICIAR_DEV.bat`
-
-## Ejecutar opcion web
-
-```powershell
+```bash
 npm install
 npm run web
 ```
 
-Luego abrir en navegador:
+Se abre en `http://localhost:5173/src/web.html`. No necesita Electron en la compu donde se usa. Para el OCR conviene tener internet la primera vez, para descargar los datos del idioma.
 
-- `http://localhost:5173/src/web.html`
+Hay accesos directos para Windows: `INICIAR_DEV.bat` (escritorio) e `INICIAR_WEB.bat` (web).
 
-Atajo disponible:
+</details>
 
-- `INICIAR_WEB.bat`
+<details>
+<summary><b>Generar instalador o versión portable</b></summary>
 
-Notas del modo web:
-
-- No requiere instalacion de Electron en la PC cliente.
-- Exporta usando descarga del navegador.
-- OCR se ejecuta en el navegador con `tesseract.js`.
-- Para OCR en web se recomienda tener internet para descargar datos de idioma al primer uso.
-- En produccion web (Vercel) se usan CDN para `pdfjs`, `xlsx` y `tesseract`.
-
-## Subir a GitHub
-
-Repositorio remoto:
-
-- `git@github.com:DavidSaboredo/convertidor-PDF.git`
-
-Comandos sugeridos:
-
-```powershell
-git init
-git add .
-git commit -m "feat: web + desktop pdf converter with excel and word export"
-git branch -M main
-git remote add origin git@github.com:DavidSaboredo/convertidor-PDF.git
-git push -u origin main
+```bash
+npm run pack           # carpeta dist/win-unpacked, sin instalador
+npm run dist           # instalador NSIS
+npm run dist:portable  # ejecutable portable
 ```
 
-## Deploy en Vercel
+También existe el acceso directo `CREAR_INSTALADOR.bat`. El archivo `spa.traineddata` se incluye en el instalador para que el OCR funcione sin conexión.
 
-Este repo ya incluye `vercel.json` para abrir directamente la web en `/src/web.html`.
+</details>
 
-Opciones:
-
-1) Dashboard Vercel
-
-- Importar repo de GitHub.
-- Framework preset: `Other`.
-- Build Command: vacio.
-- Output Directory: vacio.
-- Deploy.
-
-2) CLI
-
-```powershell
-npm i -g vercel
-vercel
-vercel --prod
-```
-
-## Generar builds
-
-### 1) Build carpeta (sin instalador)
-
-```powershell
-npm run pack
-```
-
-Salida principal:
-
-- `dist/win-unpacked/Convertidor PDF a Excel.exe`
-
-### 2) Instalador para distribuir
-
-```powershell
-npm run dist
-```
-
-Salida principal:
-
-- `dist/Convertidor PDF a Excel-Setup-1.0.0.exe`
-
-Atajo disponible:
-
-- `CREAR_INSTALADOR.bat`
-
-### 3) Portable (single exe)
-
-```powershell
-npm run dist:portable
-```
-
-## Flujo funcional
+<details>
+<summary><b>Cómo funciona</b></summary>
 
 1. El usuario abre un PDF.
-2. El sistema detecta si hay texto seleccionable.
-3. Si no hay texto, aplica OCR por pagina.
-4. Normaliza lineas y detecta filas estructuradas.
-5. Exporta resultado a TXT/CSV/XLSX.
+2. Se detecta si tiene texto seleccionable.
+3. Si no lo tiene, se aplica OCR página por página.
+4. Se normalizan las líneas y se detectan las filas estructuradas.
+5. Se exporta a TXT, CSV, XLSX o Word.
 
-## OCR y modo offline
+En la app de escritorio el OCR corre en el proceso principal (Node) y usa `spa.traineddata` local si existe. La versión web usa los archivos de `src/vendor/` (pdf.js, SheetJS y tesseract.js).
 
-- Se usa `tesseract.js` en proceso principal (Node) para mayor estabilidad en Electron.
-- Si existe `spa.traineddata`, se usa localmente.
-- `spa.traineddata` se incluye en el instalador via `extraResources`.
+</details>
 
-## Estructura relevante
+<details>
+<summary><b>Estructura del proyecto</b></summary>
 
-- `src/main.js`: proceso principal, dialogos, guardado y OCR.
-- `src/preload.js`: puente seguro IPC.
-- `src/renderer.js`: UI, lectura PDF, parseo y exportacion.
-- `src/index.html`: estructura de interfaz.
-- `src/styles.css`: estilos.
+- `src/main.js`: proceso principal de Electron, diálogos, guardado y OCR.
+- `src/preload.js`: puente seguro entre la interfaz y el proceso principal.
+- `src/renderer.js`: interfaz, lectura del PDF, análisis y exportación.
+- `src/index.html` y `src/styles.css`: interfaz de escritorio.
+- `src/web.html` y `src/web-bridge.js`: versión web.
 - `tools/generate-icon.mjs`: genera `build/icon.ico` desde `logo.png`.
 
-## Scripts de NPM
+</details>
 
-- `npm start`: inicia app.
-- `npm run build:icon`: genera icono `.ico`.
-- `npm run pack`: crea carpeta `win-unpacked`.
-- `npm run dist`: crea instalador NSIS.
-- `npm run dist:portable`: crea ejecutable portable.
+<details>
+<summary><b>Despliegue de la versión web en Vercel</b></summary>
 
-## Troubleshooting rapido
+El repositorio incluye `vercel.json`, que sirve la carpeta `src` y abre `web.html` en la raíz. En Vercel: importar el repo, preset `Other`, sin comando de build ni carpeta de salida.
 
-- "No abre selector de archivo": verificar que ejecutas el build actualizado.
-- "Error OCR": comprobar que `spa.traineddata` este en la raiz del proyecto o en recursos del build.
-- Build bloqueado por antivirus: usar `npm run pack` o agregar exclusion temporal de `dist` en Defender.
+</details>
 
-## Licencia
+<details>
+<summary><b>Problemas frecuentes</b></summary>
 
-Uso interno / privado (ajustar segun tu distribucion).
+- **No abre el selector de archivos**: verificá que estés ejecutando el build actualizado.
+- **Error de OCR**: comprobá que `spa.traineddata` esté en la raíz del proyecto o en los recursos del build.
+- **El antivirus bloquea el build**: usá `npm run pack` o agregá una exclusión temporal para la carpeta `dist`.
+
+</details>
+
+---
+
+<div align="center">
+
+Diseñado y desarrollado por **[laruzo-dev](https://laruzo-dev-ar.vercel.app)**
+<br>
+<sub>¿Querés un sistema así para tu negocio? <a href="https://laruzo-dev-ar.vercel.app/#contacto">Hablemos</a>.</sub>
+
+</div>
